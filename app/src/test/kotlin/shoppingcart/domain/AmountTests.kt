@@ -34,6 +34,12 @@ class AmountTests {
     }
 
     @ParameterizedTest
+    @MethodSource("subtractsAmount")
+    fun subtractsAmount(amount: Amount, amountToSubtract: Amount, expectedAmount: Amount) {
+        assertEquals(expectedAmount, amount.minus(amountToSubtract))
+    }
+
+    @ParameterizedTest
     @MethodSource("multipliesAmounts")
     fun multipliesAmounts(amount: Amount, amountToMultiplyBy: Amount, expectedAmount: Amount) {
         assertEquals(expectedAmount, amount.times(amountToMultiplyBy))
@@ -57,6 +63,12 @@ class AmountTests {
         fun addsAmount() = listOf(
             Arguments.of(amount("0.75"), amount("0.75"), amount("1.50")),
             Arguments.of(amount("0.37"), amount("0.22"), amount("0.59"))
+        )
+
+        @JvmStatic
+        fun subtractsAmount() = listOf(
+            Arguments.of(amount("0.75"), amount("0.75"), amount("0.0")),
+            Arguments.of(amount("0.37"), amount("0.22"), amount("0.15"))
         )
 
         @JvmStatic

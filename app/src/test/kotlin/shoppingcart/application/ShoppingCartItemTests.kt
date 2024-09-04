@@ -30,6 +30,13 @@ class ShoppingCartItemTests {
         assertEquals(expectedQuantity, shoppingCartItem.minus(removedQuantity).quantity)
     }
 
+    @ParameterizedTest
+    @MethodSource("twoForOneOffer")
+    fun appliesTwoForOneOffer(product: Product, quantity: Int, expectedSubtotal: Amount) {
+        val shoppingCartItem = ShoppingCartItem(product, quantity, Offer.TWO_FOR_ONE)
+        assertEquals(expectedSubtotal, shoppingCartItem.subtotal())
+    }
+
     companion object {
         @JvmStatic
         fun subtotal() = listOf(
@@ -47,6 +54,15 @@ class ShoppingCartItemTests {
         fun removeQuantity() = listOf(
             Arguments.of(Product("cornflakes", amount("2.52")), 1, 1, 0),
             Arguments.of(Product("bread", amount("9.98")), 4, 3, 1)
+        )
+
+        @JvmStatic
+        fun twoForOneOffer() = listOf(
+            Arguments.of(Product("cornflakes", amount("2.52")), 1, amount("2.52")),
+            Arguments.of(Product("cornflakes", amount("2.52")), 2, amount("2.52")),
+            Arguments.of(Product("cornflakes", amount("2.52")), 3, amount("5.04")),
+            Arguments.of(Product("cornflakes", amount("2.52")), 4, amount("5.04")),
+            Arguments.of(Product("cornflakes", amount("2.52")), 5, amount("7.56")),
         )
     }
 }

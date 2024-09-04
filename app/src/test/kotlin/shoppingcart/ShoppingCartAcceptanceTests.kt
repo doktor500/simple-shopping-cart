@@ -1,5 +1,6 @@
 package shoppingcart
 
+import shoppingcart.application.Offer.*
 import shoppingcart.presenters.ShoppingCartPresenter
 import shoppingcart.application.ShoppingCart
 import shoppingcart.domain.Amount
@@ -21,7 +22,7 @@ class ShoppingCartAcceptanceTests {
 
         assertEquals(
             """
-            1 x cornflakes - 2.52 each
+            1 x cornflakes @ 2.52 each
             Total = 2.52
             """.trimIndent(),
             ShoppingCartPresenter(shoppingCart).generateReceipt(),
@@ -36,8 +37,8 @@ class ShoppingCartAcceptanceTests {
 
         assertEquals(
             """
-            2 x cornflakes - 2.52 each
-            1 x bread - 9.98 each
+            2 x cornflakes @ 2.52 each
+            1 x bread @ 9.98 each
             Total = 15.02
             """.trimIndent(),
             ShoppingCartPresenter(shoppingCart).generateReceipt(),
@@ -52,7 +53,7 @@ class ShoppingCartAcceptanceTests {
 
         assertEquals(
             """
-            3 x cornflakes - 2.52 each
+            3 x cornflakes @ 2.52 each
             Total = 7.56
             """.trimIndent(),
             ShoppingCartPresenter(shoppingCart).generateReceipt()
@@ -73,12 +74,26 @@ class ShoppingCartAcceptanceTests {
         shoppingCart.map { cart ->
             assertEquals(
                 """
-                2 x cornflakes - 2.52 each
-                1 x bread - 9.98 each
+                2 x cornflakes @ 2.52 each
+                1 x bread @ 9.98 each
                 Total = 15.02
                 """.trimIndent(),
                 ShoppingCartPresenter(cart).generateReceipt()
             )
         }
+    }
+
+    @Test
+    fun shoppingCartWithOffer() {
+        val product1 = Product(name = "cornflakes", price = Amount(2.52.toBigDecimal()))
+        val shoppingCart = ShoppingCart().add(product = product1, quantity = 4).apply(offer = TWO_FOR_ONE)
+
+        assertEquals(
+            """
+            4 x cornflakes @ 2.52 each - Discount: 5.04
+            Total = 5.04
+            """.trimIndent(),
+            ShoppingCartPresenter(shoppingCart).generateReceipt()
+        )
     }
 }

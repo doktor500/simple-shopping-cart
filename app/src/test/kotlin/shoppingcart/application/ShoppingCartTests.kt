@@ -49,6 +49,14 @@ class ShoppingCartTests {
         }
     }
 
+    @Test
+    fun applyOffer() {
+        val product = product(price = amount("4.99"))
+        val shoppingCart = ShoppingCart().add(product, 2).apply(Offer.TWO_FOR_ONE)
+
+        assertEquals(amount("4.99"), shoppingCart.total())
+    }
+
     companion object {
         @JvmStatic
         fun total() = listOf(

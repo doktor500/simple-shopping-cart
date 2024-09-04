@@ -1,6 +1,8 @@
 package shoppingcart.presenters
 
+import shoppingcart.application.Offer.*
 import shoppingcart.application.ShoppingCart
+import shoppingcart.application.ShoppingCartItem
 import shoppingcart.domain.Product
 
 class ShoppingCartPresenter(private val shoppingCart: ShoppingCart) {
@@ -15,9 +17,24 @@ class ShoppingCartPresenter(private val shoppingCart: ShoppingCart) {
 
     private fun summary(): List<String> = items().plus(total())
     private fun total(): String = "Total = ${shoppingCart.total()}"
-    private fun items(): List<String> = items.map { "${it.quantity} x ${ProductPresenter(it.product).present()}" }
+    private fun items(): List<String> = items.map { "${it.quantity} x ${ShoppingCartItemPresenter(it).present()}" }
+}
+
+private class ShoppingCartItemPresenter(private val shoppingCartItem: ShoppingCartItem) {
+    fun present(): String {
+        return ProductPresenter(shoppingCartItem.product).present() + DiscountPresenter(shoppingCartItem).present()
+    }
 }
 
 private class ProductPresenter(private val product: Product) {
-    fun present(): String = "${product.name} - ${product.price} each"
+    fun present(): String = "${product.name} @ ${product.price} each"
+}
+
+private class DiscountPresenter(private val cartItem: ShoppingCartItem) {
+    val originalPrice = cartItem.copy(offer = NO_OFFER).subtotal()
+
+    fun present(): String {
+        if (cartItem.offer == TWO_FOR_ONE) return " - Discount: ${originalPrice - cartItem.subtotal()}"
+        return ""
+    }
 }

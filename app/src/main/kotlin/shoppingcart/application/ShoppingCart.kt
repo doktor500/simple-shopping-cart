@@ -5,11 +5,16 @@ import arrow.core.Either.*
 import shoppingcart.domain.Amount
 import shoppingcart.domain.Product
 
-data class ShoppingCart(val items: List<ShoppingCartItem> = emptyList()) {
+data class ShoppingCart(val items: List<ShoppingCartItem> = emptyList(), val offer: Offer = Offer.NO_OFFER) {
     fun add(product: Product, quantity: Int = 1): ShoppingCart = ShoppingCart(addProduct(product, quantity))
 
     fun remove(product: Product, quantity: Int = 1): Either<Error, ShoppingCart> {
         return removeProduct(product, quantity).map { ShoppingCart(it) }
+    }
+
+    fun apply(offer: Offer): ShoppingCart {
+        val itemsWithOffer = items.map { item -> item.copy(offer = offer) }
+        return ShoppingCart(itemsWithOffer, offer)
     }
 
     fun total(): Amount = items.sumOf { item -> item.subtotal() }
