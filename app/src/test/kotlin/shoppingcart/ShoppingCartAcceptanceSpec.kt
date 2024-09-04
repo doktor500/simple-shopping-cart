@@ -1,8 +1,8 @@
 package shoppingcart
 
 import io.kotest.core.spec.style.FunSpec
-import shoppingcart.application.Offer.TWO_FOR_ONE
-import shoppingcart.application.ShoppingCart
+import shoppingcart.domain.Offer.TWO_FOR_ONE
+import shoppingcart.domain.ShoppingCart
 import shoppingcart.domain.Amount
 import shoppingcart.domain.Product
 import shoppingcart.presenters.ShoppingCartPresenter

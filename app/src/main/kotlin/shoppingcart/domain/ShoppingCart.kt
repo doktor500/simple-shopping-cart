@@ -1,9 +1,6 @@
-package shoppingcart.application
+package shoppingcart.domain
 
 import arrow.core.Either
-import arrow.core.Either.*
-import shoppingcart.domain.Amount
-import shoppingcart.domain.Product
 
 data class ShoppingCart(val items: List<ShoppingCartItem> = emptyList()) {
     fun add(product: Product, quantity: Int = 1): ShoppingCart = ShoppingCart(addProduct(product, quantity))
@@ -28,16 +25,16 @@ data class ShoppingCart(val items: List<ShoppingCartItem> = emptyList()) {
 
     private fun removeProduct(product: Product, quantity: Int): Either<Error, List<ShoppingCartItem>> {
         return when (val existingItem = findItemBy(product)) {
-            null -> Left(Error("Product not found in the cart"))
+            null -> Either.Left(Error("Product not found in the cart"))
             else -> removeCartItem(existingItem, quantity)
         }
     }
 
     private fun removeCartItem(item: ShoppingCartItem, quantity: Int): Either<Error, List<ShoppingCartItem>> {
         return when {
-            quantity > item.quantity -> Left(Error("Quantity to remove is greater than the quantity in the cart"))
-            quantity == item.quantity -> Right(items.minus(item))
-            else -> Right(items.minus(item).plus(item.minus(quantity)))
+            quantity > item.quantity -> Either.Left(Error("Quantity to remove is greater than the quantity in the cart"))
+            quantity == item.quantity -> Either.Right(items.minus(item))
+            else -> Either.Right(items.minus(item).plus(item.minus(quantity)))
         }
     }
 

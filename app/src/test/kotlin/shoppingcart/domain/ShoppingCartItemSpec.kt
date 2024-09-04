@@ -1,10 +1,7 @@
-package shoppingcart.application
+package shoppingcart.domain
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.datatest.withData
-import shoppingcart.domain.Amount
-import shoppingcart.domain.Product
-import shoppingcart.domain.amount
 import kotlin.test.assertEquals
 
 class ShoppingCartItemSpec : FunSpec({

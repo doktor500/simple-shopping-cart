@@ -1,8 +1,8 @@
 package shoppingcart.presenters
 
-import shoppingcart.application.Offer.*
-import shoppingcart.application.ShoppingCart
-import shoppingcart.application.ShoppingCartItem
+import shoppingcart.domain.Offer.*
+import shoppingcart.domain.ShoppingCart
+import shoppingcart.domain.ShoppingCartItem
 import shoppingcart.domain.Product
 
 class ShoppingCartPresenter(private val shoppingCart: ShoppingCart) {

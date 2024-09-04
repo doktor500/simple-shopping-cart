@@ -1,8 +1,7 @@
-package shoppingcart.application
+package shoppingcart.domain
 
-import shoppingcart.application.Offer.*
-import shoppingcart.domain.Amount
-import shoppingcart.domain.Product
+import shoppingcart.domain.Offer.NO_OFFER
+import shoppingcart.domain.Offer.TWO_FOR_ONE
 
 data class ShoppingCartItem(val product: Product, val quantity: Int = 1, val offer: Offer = NO_OFFER) {
     fun subtotal(): Amount {
