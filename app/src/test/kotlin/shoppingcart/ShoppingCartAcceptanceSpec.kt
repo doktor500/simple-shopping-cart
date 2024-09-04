@@ -1,22 +1,20 @@
 package shoppingcart
 
-import shoppingcart.application.Offer.*
-import shoppingcart.presenters.ShoppingCartPresenter
+import io.kotest.core.spec.style.FunSpec
+import shoppingcart.application.Offer.TWO_FOR_ONE
 import shoppingcart.application.ShoppingCart
 import shoppingcart.domain.Amount
 import shoppingcart.domain.Product
-import kotlin.test.Test
+import shoppingcart.presenters.ShoppingCartPresenter
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class ShoppingCartAcceptanceTests {
-    @Test
-    fun shoppingCartEmpty() {
+class ShoppingCartAcceptanceSpec : FunSpec({
+    test("prints receipt for empty cart") {
         assertEquals("Shopping cart is empty!", ShoppingCartPresenter(ShoppingCart()).generateReceipt())
     }
 
-    @Test
-    fun shoppingCartWithOneProductAdded() {
+    test("prints receipt for cart with one product") {
         val product = Product(name = "cornflakes", price = Amount(2.52.toBigDecimal()))
         val shoppingCart = ShoppingCart().add(product)
 
@@ -29,8 +27,7 @@ class ShoppingCartAcceptanceTests {
         )
     }
 
-    @Test
-    fun shoppingCartWithDifferentProductsAdded() {
+    test("prints receipt for cart with different products") {
         val product1 = Product(name = "cornflakes", price = Amount(2.52.toBigDecimal()))
         val product2 = Product(name = "bread", price = Amount(9.98.toBigDecimal()))
         val shoppingCart = ShoppingCart().add(product = product1, quantity = 2).add(product = product2, quantity = 1)
@@ -45,8 +42,7 @@ class ShoppingCartAcceptanceTests {
         )
     }
 
-    @Test
-    fun shoppingCartWithSameProductAddedMultipleTimes() {
+    test("prints receipt for cart with same product added multiple times") {
         val product1 = Product(name = "cornflakes", price = Amount(2.52.toBigDecimal()))
         val product2 = Product(name = "cornflakes", price = Amount(2.52.toBigDecimal()))
         val shoppingCart = ShoppingCart().add(product = product1).add(product = product2, quantity = 2)
@@ -60,8 +56,7 @@ class ShoppingCartAcceptanceTests {
         )
     }
 
-    @Test
-    fun shoppingCartWithAddedAndRemoveProducts() {
+    test("prints receipt for cart with added and removed products") {
         val product1 = Product(name = "cornflakes", price = Amount(2.52.toBigDecimal()))
         val product2 = Product(name = "bread", price = Amount(9.98.toBigDecimal()))
         val shoppingCart = ShoppingCart()
@@ -83,8 +78,7 @@ class ShoppingCartAcceptanceTests {
         }
     }
 
-    @Test
-    fun shoppingCartWithOffer() {
+    test("prints receipt for cart that contains a 'two for one' offer") {
         val product1 = Product(name = "cornflakes", price = Amount(2.52.toBigDecimal()))
         val shoppingCart = ShoppingCart().add(product = product1, quantity = 4).apply(offer = TWO_FOR_ONE)
 
@@ -96,4 +90,4 @@ class ShoppingCartAcceptanceTests {
             ShoppingCartPresenter(shoppingCart).generateReceipt()
         )
     }
-}
+})

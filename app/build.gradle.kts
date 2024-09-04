@@ -13,10 +13,11 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test:2.0.20")
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.11.0")
+    testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
+    testImplementation("io.kotest:kotest-framework-datatest:5.9.1")
 }
 
-
-tasks.test {
+tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
 

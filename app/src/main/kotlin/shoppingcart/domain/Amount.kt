@@ -9,7 +9,6 @@ data class Amount(private val value: BigDecimal) {
     override fun toString(): String = value.setScale(2, RoundingMode.HALF_UP).toString()
     operator fun plus(amount: Amount): Amount = Amount(value + amount.value)
     operator fun minus(amount: Amount): Amount = Amount(value - amount.value)
-    operator fun times(times: Amount): Amount = Amount(value.times(times.value))
     operator fun times(times: Int): Amount = Amount(value.times(times.toBigDecimal()))
 
     override fun hashCode(): Int {
